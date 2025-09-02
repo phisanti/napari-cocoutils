@@ -6,6 +6,10 @@ A napari plugin for visualizing COCO annotation datasets with interactive contro
 **Advanced Filtering**: Filter annotations by category with real-time updates  
 **Multi-Image Support**: Navigate between images in datasets with multiple images  
 
+Below is an example usage screenshot of how the app looks:
+
+![napari-cocoutils Example](./examples/example_usage.png)
+
 ## Installation
 
 ### Requirements
