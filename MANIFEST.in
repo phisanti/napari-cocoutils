@@ -1,0 +1,8 @@
+include LICENSE
+include README.md
+include ROADMAP.md
+include CLAUDE.md
+include cocoutils-primer.md
+recursive-include src/napari_cocoutils *.yaml
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]

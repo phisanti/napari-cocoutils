@@ -1,0 +1,18 @@
+name: napari-cocoutils
+display_name: COCO Utils
+contributions:
+  commands:
+    - id: napari-cocoutils.coco_reader
+      title: Read COCO JSON file
+      python_name: napari_cocoutils._reader:coco_reader
+    - id: napari-cocoutils.coco_widget
+      title: COCO Visualization Controls
+      python_name: napari_cocoutils._widget:CocoWidget
+  readers:
+    - command: napari-cocoutils.coco_reader
+      filename_patterns: ['*.json']
+      accepts_directories: false
+  widgets:
+    - command: napari-cocoutils.coco_widget
+      display_name: COCO Controls
+      autogenerate: false

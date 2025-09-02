@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools-scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "napari-cocoutils"
+description = "A napari plugin for visualizing COCO annotation datasets with interactive controls and advanced filtering"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "napari-cocoutils contributors"},
+]
+keywords = ["napari", "plugin", "coco", "visualization", "annotations", "segmentation"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: napari",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "napari>=0.6.4",
+    "numpy",
+    "qtpy",
+    "cocoutils",  # Local dependency - will need proper packaging
+    "matplotlib",  # For color generation
+    "psutil",      # For memory usage monitoring
+    "appdirs",     # For configuration directories
+]
+version = "0.1.0"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-qt",
+    "pytest-cov",
+    "black",
+    "isort",
+    "flake8",
+]
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/napari-cocoutils"
+Repository = "https://github.com/yourusername/napari-cocoutils"
+Issues = "https://github.com/yourusername/napari-cocoutils/issues"
+
+[project.entry-points."napari.manifest"]
+napari-cocoutils = "napari_cocoutils:napari.yaml"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+napari_cocoutils = ["napari.yaml"]
+
+
+[tool.black]
+line-length = 88
+target-version = ["py38", "py39", "py310", "py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["src/napari_cocoutils/_tests"]
+addopts = "-v --tb=short"
