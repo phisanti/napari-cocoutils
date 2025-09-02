@@ -1,0 +1,31 @@
+name: napari-cocoutils
+display_name: COCO Utils
+summary: A napari plugin for visualizing COCO annotation datasets
+description: |
+  napari-cocoutils provides functionality to load, visualize and interact with COCO JSON annotation files
+  in napari. Features include:
+  
+  - Load COCO JSON files directly into napari
+  - Category-based filtering with checkboxes
+  - Multi-image navigation for datasets
+  - Visualization modes (overlay/masked)
+  - N-filter for performance with large datasets
+  - Built on the proven cocoutils library
+  
+  Perfect for researchers working with computer vision datasets who need to visualize and validate
+  their COCO annotations interactively.
+
+authors:
+  - github_username: your-username
+    name: Your Name
+
+license: MIT
+tags:
+  - annotation
+  - computer-vision
+  - coco
+  - dataset
+  - visualization
+  - segmentation
+
+category: Annotation
