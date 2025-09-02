@@ -4,7 +4,7 @@ A napari plugin for visualizing COCO annotation datasets with interactive contro
 
 ![PyPI - Version](https://img.shields.io/pypi/v/napari-cocoutils)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/napari-cocoutils)
-![License](https://img.shields.io/github/license/yourusername/napari-cocoutils)
+![License](https://img.shields.io/github/license/phisanti/napari-cocoutils)
 
 ## Features
 
@@ -22,13 +22,13 @@ A napari plugin for visualizing COCO annotation datasets with interactive contro
 
 - Python 3.10+
 - napari 0.6.4+
-- cocoutils (local dependency)
+- [cocoutils](https://github.com/phisanti/cocoutils) - Core COCO manipulation library
 
 ### Install from Source
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/napari-cocoutils.git
+git clone https://github.com/phisanti/napari-cocoutils.git
 cd napari-cocoutils
 
 # Create conda environment (recommended)
@@ -38,8 +38,9 @@ conda activate cocoutils
 # Install dependencies
 conda install -c conda-forge napari pyqt
 
-# Install cocoutils dependency (adjust path as needed)
-pip install -e /path/to/cocoutils
+# Install cocoutils dependency
+git clone https://github.com/phisanti/cocoutils.git
+pip install -e ./cocoutils
 
 # Install the plugin in development mode
 pip install -e .
@@ -254,7 +255,8 @@ pip install -e .
 **"No module named cocoutils"**  
 ```bash
 # Install the cocoutils dependency
-pip install -e /path/to/cocoutils
+git clone https://github.com/phisanti/cocoutils.git
+pip install -e ./cocoutils
 ```
 
 **"napari doesn't recognize COCO files"**
@@ -301,7 +303,7 @@ If you use napari-cocoutils in your research, please cite:
 ```bibtex
 @software{napari_cocoutils,
   title={napari-cocoutils: Interactive COCO Annotation Visualization},
-  url={https://github.com/yourusername/napari-cocoutils},
+  url={https://github.com/phisanti/napari-cocoutils},
   year={2024}
 }
 ```
@@ -309,5 +311,5 @@ If you use napari-cocoutils in your research, please cite:
 ## Acknowledgments
 
 - Built on the powerful [napari](https://napari.org) visualization framework
-- Integrates with the [cocoutils](https://github.com/yourusername/cocoutils) library
+- Integrates with the [cocoutils](https://github.com/phisanti/cocoutils) library
 - Inspired by the [COCO dataset](https://cocodataset.org) format
