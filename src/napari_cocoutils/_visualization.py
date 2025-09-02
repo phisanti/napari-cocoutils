@@ -90,11 +90,16 @@ class CocoNapariVisualizer:
         if cached_result is not None:
             return cached_result
         
-        annotations = self._get_filtered_annotations(image_id, category_filter)
+        annotations = self._get_selected_annotations(image_id, category_filter)
         
         if not annotations:
             self._shape_cache.put(cache_key, None, 0)
             return None
+        
+        # Apply N-filter sampling at annotation level (before shape conversion)
+        if n_filter and len(annotations) > n_filter:
+            annotations = self.subsample_annotations(annotations, n_filter, random_seed)
+            print(f"N-filter applied: {len(annotations)} annotations sampled from original total")
         
         shapes_data = []
         properties = []
@@ -154,22 +159,6 @@ class CocoNapariVisualizer:
                     if shape_type == 'rectangle':
                         shape_types[i] = 'polygon'
             
-            # Apply N-filter sampling if requested and necessary
-            if n_filter and len(shapes_data) > n_filter:
-                import numpy as np
-                rng = np.random.RandomState(random_seed)
-                sample_size = min(n_filter, len(shapes_data))
-                indices = rng.choice(len(shapes_data), sample_size, replace=False)
-                
-                # Apply sampling to all arrays consistently
-                shapes_data = [shapes_data[i] for i in indices]
-                face_colors = [face_colors[i] for i in indices]
-                edge_colors = [edge_colors[i] for i in indices]
-                shape_types = [shape_types[i] for i in indices]
-                properties = [properties[i] for i in indices]
-                
-                print(f"N-filter applied: {len(shapes_data)} shapes sampled from original total")
-            
             layer_kwargs = {
                 'properties': properties,
                 'face_color': face_colors,
@@ -198,9 +187,9 @@ class CocoNapariVisualizer:
         return self.category_colors
     
     
-    def _get_filtered_annotations(self, image_id: int, category_filter: Optional[List[int]] = None) -> List[Dict[str, Any]]:
+    def _get_selected_annotations(self, image_id: int, category_filter: Optional[List[int]] = None) -> List[Dict[str, Any]]:
         """
-        Get filtered annotations for specified image and categories with caching.
+        Get selected annotations for specified image and categories with caching.
         
         Parameters
         ----------
@@ -212,7 +201,7 @@ class CocoNapariVisualizer:
         Returns
         -------
         list of dict
-            Filtered COCO annotation dictionaries
+            Selected COCO annotation dictionaries
         """
         cache_key = (image_id, tuple(sorted(category_filter)) if category_filter else None)
         
@@ -231,6 +220,40 @@ class CocoNapariVisualizer:
         estimated_size = len(annotations) * 200
         self._annotation_cache.put(cache_key, annotations, estimated_size)
         return annotations
+    
+    def subsample_annotations(self, annotations: List[Dict[str, Any]], sample_size: int, random_seed: int = 42) -> List[Dict[str, Any]]:
+        """
+        Subsample annotations to the specified sample size using random sampling.
+        
+        This method applies N-filter logic at the annotation level, ensuring that
+        when an annotation is selected, all its shapes (bbox + polygons) will be
+        included together in the final visualization.
+        
+        Parameters
+        ----------
+        annotations : list of dict
+            List of COCO annotation dictionaries to subsample from
+        sample_size : int
+            Maximum number of annotations to select
+        random_seed : int, optional
+            Random seed for consistent sampling (default: 42)
+            
+        Returns
+        -------
+        list of dict
+            Subsampled list of COCO annotation dictionaries
+        """
+        if sample_size >= len(annotations):
+            # No subsampling needed
+            return annotations
+        
+        rng = np.random.RandomState(random_seed)
+        sample_size = min(sample_size, len(annotations))
+        indices = rng.choice(len(annotations), sample_size, replace=False)
+        
+        # Return subsampled annotations in original order
+        indices = np.sort(indices)
+        return [annotations[i] for i in indices]
     
     def _convert_polygon_cached(self, polygon: List[float]) -> Optional[np.ndarray]:
         """
